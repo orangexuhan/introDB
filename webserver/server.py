@@ -220,7 +220,7 @@ def item():
 
 @app.route('/item/search', methods=['POST'])
 def item_search():
-  print request.form['iid']
+  print (request.form['iid'])
   iid = int(request.form['iid'])
   cursor = g.conn.execute('SELECT * FROM item WHERE iid=cast(%s as int)', iid)
   names = []
@@ -338,6 +338,7 @@ def match():
   cursor2 = g.conn.execute("""SELECT B.hid, H.hname, B.kill, B.assist, B.assist, B.death, B.gpm, B.xpm, B.last_hit, B.denies
                              FROM belong_to B, hero H
                              WHERE B.hid=H.hid and B.mid=cast(%s as int) and B.radiant=False""", mid)
+  cursor3 = g.conn.execute("""SELECT pt.ptname, pt.ptid from Play_In p natural join Pro_team pt where p.mid = cast(%s as int)""", mid)
   hero1 = []
   for result in cursor1:
     hid = result['hid']
@@ -362,7 +363,11 @@ def match():
     hero2.append((result['hid'], result['hname'], items, result['kill'], result['assist'], result['death'], result['gpm'], result['xpm'], result['last_hit'], result['denies']))
     cursorItem.close()
   cursor2.close()
-  context = dict(mid=mid, team1 = hero1, team2 = hero2)
+  team = []
+  for result in cursor3:
+    team.append(result);
+  context = dict(mid=mid, team1 = hero1, team2 = hero2, team=team)
+  print(team)
   return render_template("match.html", **context)
 
 @app.route('/summary', methods=['POST', 'GET'])

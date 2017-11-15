@@ -61,7 +61,13 @@
 	<div class="title"><h2 align="center">Match id : {{mid}}</h2></div>
 
 	<div align="center">
-		<h2 align="left"> Radient : team1 
+		<h2 align="left"> Radient: 
+		<!-- : {{team[0]['ptname']}} -->
+		<form id="__form_team1{{team[0]['ptid']}}" method="POST" action="/team">
+		<input type="hidden" name="ptid" value="{{team[0]['ptid']}}"/> 
+		</form>
+		<a onclick="document.getElementById('__form_team1{{team[0]['ptid']}}').submit();" href="#">{{team[0]['ptname']}}</a>
+
 	   	<table id="generatedTable" border='1' align='center'>  
             <thead>  
                 <tr align="center">  
@@ -112,7 +118,14 @@
 
 
 	<div align="center">
-		<h2 align="left"> Dire : team2
+		<h2 align="left"> Dire : 
+		<!-- {{team[1]['ptname']}} -->
+		<form id="__form_team1{{team[1]['ptid']}}" method="POST" action="/team">
+		<input type="hidden" name="ptid" value="{{team[1]['ptid']}}"/> 
+		</form>
+		<a onclick="document.getElementById('__form_team1{{team[1]['ptid']}}').submit();" href="#">{{team[1]['ptname']}}</a>
+
+
 	   	<table id="generatedTable" border="1" align='center'>  
             <thead>  
                 <tr align="center">  
