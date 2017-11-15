@@ -278,13 +278,25 @@ def team():
   players = []
   pnames = []
   position = []
+  win = []
+
+  winrate = g.conn.execute("""SELECT CAST(CAST(Temp1.win AS float)/CAST(Temp2.total AS float) AS numeric(18, 2)) as winrate
+                              FROM (SELECT COUNT(*) as win
+                                    FROM play_in P, team_compose T
+                                    WHERE P.ptid=cast(%s as int) and P.mid=T.mid and P.radiant=T.radiant and T.win=true) Temp1,
+                                   (SELECT COUNT(*) as total
+                                    FROM play_in P, team_compose T
+                                    WHERE P.ptid=cast(%s as int) and P.mid=T.mid and P.radiant=T.radiant) Temp2""", ptid, ptid)
+  for w in winrate:
+    win.append(w['winrate'])
+  winrate.close()
   for result in cursor:
     players.append(result['pid'])  # can also be accessed using result[0]
     position.append(result['position'])
     pnames.append(result['pname'])
     ptname = result['ptname']
   cursor.close()
-  context = dict(ptids=ptid, data = zip(players, pnames, position), ptname=ptname)
+  context = dict(ptids=ptid, data = zip(players, pnames, position), ptname=ptname, winrate=win)
   return render_template("team.html", **context)
 
 @app.route('/player', methods=['POST', 'GET'])
