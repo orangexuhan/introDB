@@ -3,7 +3,7 @@ create table League (
 	lid int,
 	prize_pool int,
 	primary key (lid),
-	short_des tsvector 
+	short_des text 
 );
 
 create table Item (
@@ -26,7 +26,7 @@ create table Pro_Team (
 	ptid int,
 	ptname varchar(100),
 	primary key(ptid),
-	short_des tsvector 
+	short_des text 
 );
 
 
@@ -97,8 +97,8 @@ create table Belong_To (
 
 create table Participate (
 	lid int references League,
-	ptid int references Pro_Team,
 	rank int,
+	ptid int references Pro_Team,
 	primary key (lid, ptid)
 );
 
@@ -110,3 +110,5 @@ create table Match_Host (
 	primary key (mid),
 	foreign key (lid) references League 
 );
+
+xuhan15801342399
